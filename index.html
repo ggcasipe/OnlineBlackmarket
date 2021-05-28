@@ -209,6 +209,17 @@
                 	document.getElementById('address').name = ""
             	}
         	}
+			function cust_info(){
+            if(document.getElementById('cust_name').value==""||(document.getElementById('cust_addr').value==""||document.getElementById('cust_email').value=="")){
+                    alert("Incomplete Information!");
+                return false;
+                }
+            else{
+                document.getElementById('submit').type="submit";
+                document.getElementById('form').action="http://savantandsparktest.ml/checkout.php";
+                document.getElementById('form').method="POST";
+            }
+        }
     	</script>
 	</head>
 	<body>
@@ -428,7 +439,7 @@
                     		<input class="form-control" id="address" type="text" placeholder="1721 Cavite St, Santa Cruz, Manila, 1014 Metro Manila" name="cust_addr">
                     	<input class="form-control" id="order" type="text" placeholder="Address" name="cust_order" style="display: none">
                     	<br>
-                    	<input type="submit" value="Submit" class="btn btn-outline-success">
+                    	<input type="submit" value="Submit" class="btn btn-outline-success" onclick="cust_info()" onsubmit="return false">
                 	</form>
             	</div>
         	</div>
