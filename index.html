@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="UTF-8">
+    	<title>Index</title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    	<link rel="preconnect" href="https://fonts.gstatic.com">
+    	<link href="https://fonts.googleapis.com/css2?family=Kodchasan" rel="stylesheet">
+    	<!--ptUkcPC3K&DB%seR7DbF-->
+        
+    		<style>
+        		body{
+            		background-image: url("https://image.freepik.com/free-vector/abstract-black-lines-pattern-repeat-striped-background_78474-106.jpg");
+            		background-size: cover;
+            		background-attachment: fixed;
+            		margin: 8px;
+					color:#F7F7F7;
+        			}
+				.par{
+					width:95%;
+					padding-top:15px;
+					padding-left:7px;
+					padding-right:7px;
+					margin-bottom:25px;
+					}
+        		*{
+            		font-family: Kodchasan, serif !important;
+            		word-wrap: break-word;
+        			}
+        		img {
+            		max-width: 100%;
+            		max-height: 100%;
+            		object-fit: cover;
+            		height: 100px;
+        			}
+        		.row{
+            		margin: 0 0 15px 0;
+        			}
+        		.product2 button{
+            		font-size: 12px;
+        			}
+        		.product2 p{
+            		border-top: 1px solid black;
+            		border-bottom: 1px solid black;
+            		font-weight: bold;
+        			}
+        		.product2 img{
+            		margin-bottom: 10px;
+        			}
+        		.body{
+            		height: 200px;
+        			}
+        		.product{
+            		float: left;
+            		padding: 0 10px;
+        			}
+        		.product2{
+            		border-radius: 10px;
+            		border: 1px solid black;
+            		text-align: center;
+            		padding: 10px;
+            		background: rgba(171,171,171, 0.3);
+        			}
+        		.idk{
+            		border-radius: 10px;
+            		border: 1px solid black;
+            		text-align: center;
+           	 		padding: 10px;
+        			}
+        		.remove{
+            		text-decoration: none;
+            		color: #FA0501;
+					font-style: italic;
+        			}
+        		.remove:hover{
+            		text-decoration: underline;
+            		cursor: pointer;
+					color: #E32E0B;
+        			}
+        		.nav{
+            		border: 1px solid black;
+            		transition-duration: 0.2s;
+            		cursor: pointer;
+					color: #F7F7F7;
+        			}
+        		.nav:hover{
+            		background-color: #dddddd;
+					color:black;
+        			}
+        		.about {
+            		text-align: center;
+            		text-decoration: none;
+            		color: #F7F7F7;
+            		font-size: 30px;
+            		transition-duration: 0.2s;
+        			}
+        		.about:hover {
+            		background-color: #dddddd;
+					color:black;
+            		text-decoration: none;
+        			}
+        		@media (max-width:768px) {
+            		#pog{display: none;}
+            		#notPog{display: inline;}
+        			}
+        		@media (min-width:768px) {
+            		#notPog{display: none;}
+            		#pog{display: inline;}
+        			}
+    		</style>
+    		<script>
+        	let shop = {
+            	custOrder: []
+        		}	
+        	let cart = false
+        	let productID = 0
+        	let productCount = 0
+        	let totalPrice = 0
+
+        	function add(name, price){
+            	if(cart === false){
+                	document.getElementById("cart").innerHTML = ""
+                	cart = true
+            	}
+            	productCount += 1
+            	totalPrice += price
+            	console.log(`Ordering: ${name}\nPrice: ${price}\nTotal: ${totalPrice}`)
+
+            	document.getElementById("cart").innerHTML += `
+            	<div id="${productID}" style="margin: 0; border-bottom: 1px solid black; padding: 10px">
+                	<p style="margin: 0"><b>${name}</b>   <span id="remove${productID}" class="remove" onclick="remove('${productID}')">&nbsp;remove</span></p>
+                	<p style="margin: 0">Price: Php ${price}</p>
+            	</div>`
+            	document.getElementById("total").innerHTML = `Total: Php ${totalPrice}`
+
+            	shop.custOrder[`${productID}`] = {
+                	prod_name: name,
+                	prod_price: price,
+                	prod_number: productID
+            	}
+            	document.getElementById("order").value = JSON.stringify(shop.custOrder)
+
+            	productID += 1
+        		}
+
+        	function remove(x) {
+            	document.getElementById(x).remove()
+            	productCount -= 1
+            	totalPrice -= shop.custOrder[x].prod_price
+            	document.getElementById("total").innerHTML = `Total: ${totalPrice} Primogems`
+
+            	console.log(`Removing: ${shop.custOrder[x].prod_name}\nPrice: ${shop.custOrder[x].prod_price}`)
+            	delete shop.custOrder[x]
+            	refresh()
+
+            	if(productCount <= 0){
+                	document.getElementById("cart").innerHTML = `
+                	<p>Nothing Added Yet</p>`
+                	cart = false
+            	}
+
+            	document.getElementById("order").value = JSON.stringify(shop.custOrder)
+        	}
+
+        	function refresh() {
+            	let index = 1
+            	for(let x = 0; x < shop.custOrder.length; x++){
+                	if(shop.custOrder[x] === undefined){
+                    	shop.custOrder.splice(x, index)
+                    	x -= 1
+                	}
+            	}
+            	productID = shop.custOrder.length - 1
+            	for(let x = 0; x <= productID; x++){
+                	if (shop.custOrder[x].prod_number !== x){
+                    	document.getElementById(`${shop.custOrder[x].prod_number}`).id = `${x}`
+                    	document.getElementById(`remove${shop.custOrder[x].prod_number}`).setAttribute("onclick", `remove(${x})`)
+                    	document.getElementById(`remove${shop.custOrder[x].prod_number}`).id = `remove${x}`
+                    	shop.custOrder[x].prod_number = x
+                	}
+            	}
+            	productID = shop.custOrder.length
+        	}
+
+        	function tab(x) {
+            	document.getElementById("Category1").style.display = "none"
+            	document.getElementById("cat1").style.backgroundColor = ""
+            	document.getElementById("Category2").style.display = "none"
+            	document.getElementById("cat2").style.backgroundColor = ""
+            	document.getElementById("Category3").style.display = "none"
+            	document.getElementById("cat3").style.backgroundColor = ""
+            	document.getElementById("Category4").style.display = "none"
+            	document.getElementById("cat4").style.backgroundColor = ""
+            	document.getElementById(`Category${x}`).style.display = "block"
+            	document.getElementById(`cat${x}`).style.backgroundColor = "black"
+        	}
+        
+        	function check() {
+            	if(document.getElementById('name').value === ""){
+                	document.getElementById('name').name = ""
+            	}
+            	if(document.getElementById('email').value === ""){
+                	document.getElementById('email').name = ""
+            	}
+            	if(document.getElementById('address').value === ""){
+                	document.getElementById('address').name = ""
+            	}
+        	}
+    	</script>
+	</head>
+	<body>
+	<div class="par">
+    	<div class="row">
+        	<div class="header col-sm-10">
+            	<h1 style="display: inline"><b>BlackMarket</b></h1>
+            	&nbsp; An assortment of essentials and non-essentials.
+        	</div>
+        	<a class="header col-sm-2 about" href="about.html"><b>About Us</b></a>
+    	</div>
+    	<div class="body">
+        	<div class="row">
+            	<div id="cat1" class="col-sm-3 nav" onclick="tab('1')" style="background-color: black; color: white">Games</div>
+            	<div id="cat2" class="col-sm-3 nav" onclick="tab('2')">Drinks</div>
+            	<div id="cat3" class="col-sm-3 nav" onclick="tab('3')">Toys</div>
+            	<div id="cat4" class="col-sm-3 nav" onclick="tab('4')">Misc</div>
+        	</div>
+        	<div id="Category1">
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://cdn1.byjus.com/wp-content/uploads/2019/06/volume-of-a-cube.png" alt="piss">
+                    	<p>Minecraft</p>
+                    	<button class="btn btn-outline-light" onclick="add('Minecraft', 1750)">Php 1,750</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://www.thespruce.com/thmb/6h_2kYh-vSo4R_ldYVDxt6ry1w0=/450x0/filters:no_upscale():max_bytes(150000):strip_icc()/the-difference-between-trees-and-shrubs-3269804-hero-a4000090f0714f59a8ec6201ad250d90.jpg" alt="picture of a tree">
+                    	<p>Terraria</p>
+                    	<button class="btn btn-outline-light" onclick="add('Terraria', 300)">Php 300</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://media.discordapp.net/attachments/713289129995141159/841616039611727912/unknown.png" alt="among us crewmate">
+                    	<p>Fall Guys</p>
+                    	<button class="btn btn-outline-light" onclick="add('Fall Guys', 449)">Php 449</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Genshin_Impact_logo.svg/1200px-Genshin_Impact_logo.svg.png" alt="Genshin Impact">
+                    	<p>Gambling Simulator</p>
+                    	<button class="btn btn-outline-light" onclick="add('Genshin Impact', 0)">Free</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://cdn.akamai.steamstatic.com/steam/apps/1091500/capsule_616x353.jpg?" alt="Cyberpunk 2099">
+                    	<p>Cyberpunk 1984</p>
+                    	<button class="btn btn-outline-light" onclick="add('Cyberpunk 1984', 2599)">Php 2,599</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://art.ngfiles.com/images/1646000/1646736_rainnxyz_amugus.png" alt="among us mug (amugus)">
+                    	<p>ogus</p>
+                    	<button class="btn btn-outline-light" onclick="add('ogus', 160)">Php 160</button>
+                	</div>
+            	</div>
+        	</div>
+        	<div id="Category2" style="display: none">
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://www.aces.edu/wp-content/uploads/2020/06/A-Glass-of-water-on-white-background-1161576130_5760x3840-scaled-e1593446976432.jpeg" alt="water">
+                    	<p>Water</p>
+                    	<button class="btn btn-outline-light" onclick="add('Water', 10)">Php 10</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://www.aces.edu/wp-content/uploads/2020/06/A-Glass-of-water-on-white-background-1161576130_5760x3840-scaled-e1593446976432.jpeg" alt="water">
+                    	<p>Water but no 5G</p>
+                    	<button id="pog" class="btn btn-outline-light" onclick="add('5G-Free Water', 1000000)">Php 1,000,000</button>
+                    	<button id="notPog" class="btn btn-outline-light" onclick="add('5G-Free Water', 1000000)">Php 1 M</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://i1.sndcdn.com/artworks-720srrzZh4PLVKmX-yzidqg-t500x500.jpg" alt="Holy Water">
+                    	<p>Holy Water</p>
+                    	<button class="btn btn-outline-light" onclick="add('Holy Water', 300)">Php 300</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://static.wikia.nocookie.net/gensin-impact/images/2/2a/Item_Holy_Water.png" alt="Holy Water from Genshin Imoact">
+                    	<p>Bath Water</p>
+                    	<button class="btn btn-outline-light" onclick="add('Bath Water', 70000)">Php 70,000</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+             		<div class="product2">
+                    	<img src="https://media.discordapp.net/attachments/713289129995141159/841264136573681694/unknown.png" alt="Water">
+                    	<p>Water 2</p>
+                    	<button class="btn btn-outline-light" onclick="add('Water 2', 20)">Php 20</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://wallpaperaccess.com/full/1556608.jpg" alt="White Screen">
+                    	<p>Water Vapor</p>
+                    	<button class="btn btn-outline-light" onclick="add('Water Vapor', 100)">Php 100</button>
+                	</div>
+            	</div>
+        	</div>
+        	<div id="Category3" style="display: none">
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://cdn.discordapp.com/attachments/713289129995141159/840589353164210186/182028225_830306280903490_1669561248431072807_n.png" alt="Lobster plushie of Josh Calbang">
+                    	<p>harold</p>
+                    	<button class="btn btn-outline-light" onclick="add('harold', 500)">Php 500</button>
+                	</div>
+           		</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://cdn.discordapp.com/attachments/713289129995141159/840589304606359602/182875514_222708702542488_8847750932884738109_n.png" alt="We Bare Bears Grizz plushie of John Michael Santos">	
+                    	<p>jm bear</p>
+                    	<button class="btn btn-outline-light" onclick="add('jm bear', 750)">Php 750</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://i.imgflip.com/5327it.jpg" alt="Among us impostor plushie">
+                    	<p>amog</p>
+                    	<button class="btn btn-outline-light" onclick="add('amog', 160)">Php 160</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://i.redd.it/fbj5tumw15f21.jpg" alt="Frozen (2013) Rubix cube">
+                    	<p>c u b e</p>
+                    	<button class="btn btn-outline-light" onclick="add('cube', 100)">Php 100</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://media.discordapp.net/attachments/713289129995141159/841275469768949770/unknown.png" alt="Drawing of Mario">
+                    	<p>maro</p>
+                    	<button class="btn btn-outline-light" onclick="add('maro', 1000)">Php 1,000</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://media.discordapp.net/attachments/713289129995141159/841275530909188096/unknown.png" alt="Drawing of Luigi">
+                    	<p>lugi</p>
+                    	<button class="btn btn-outline-light" onclick="add('lugi', 1000)">Php 1,000</button>
+                	</div>
+            	</div>
+        	</div>
+        	<div id="Category4" style="display: none">
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://rerollcdn.com/GENSHIN/Characters/Zhongli.png" alt="Genshin Impact Zhongli">
+                    	<p>Zhongli</p>
+                    	<button class="btn btn-outline-light" onclick="add('Zhongli', 15000)">Php 15,000</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://64.media.tumblr.com/6d0cb20f174da01db2bf820e17c38976/8bb5cadfae349427-86/s400x600/ea96c9cc8793f244a8e6dd519fc0ec60d410b950.jpg" alt="Genshin Impact Zhongli with no hair">
+                    	<p>Zhongli but bald</p>
+                    	<button class="btn btn-outline-light" onclick="add('Zhongli but Bald', 28800)">Php 28,800</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://i.imgur.com/J65ewOfh.jpg" alt="Genshin Impact Paimon in a cooking pot">
+                    	<p>Emergency Food</p>
+                    	<button class="btn btn-outline-light" onclick="add('Emergency Food', 50)">Php 50</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="http://prod-upp-image-read.ft.com/6057b8fe-0c1f-11e6-b0f1-61f222853ff3" alt="Lobster">
+                    	<p>Buffed Crab</p>
+                    	<button class="btn btn-outline-light" onclick="add('Buffed Crab', 500)">Php 500</button>
+                	</div>
+            	</div>
+            		<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://cdn.discordapp.com/attachments/713289129995141159/840589267016351744/181917422_468492171110744_2400703000639574973_n.png" alt="Gerzen Zabala in female PSHS Uniform from batch 2024">
+                    	<p>anime girl</p>
+                    	<button class="btn btn-outline-light" onclick="add('anime girl', 14400)">Php 14,400</button>
+                	</div>
+            	</div>
+            	<div class="col-sm-2 product">
+                	<div class="product2">
+                    	<img src="https://pbs.twimg.com/profile_images/1364920241265012743/Y__158zv_400x400.png" alt="amogus impostor from sustoss comics">
+                    	<p>ogus</p>
+                    	<button class="btn btn-outline-light" onclick="add('mogu', 160)">Php 160</button>
+                	</div>
+            	</div>
+        	</div>
+    	</div>
+    	<br>
+    	<div style="margin: 10px">
+        	<div class="col-sm-4 product"><br>
+            	<h3>Da Cart:</h3>
+            	<div style="border-radius: 10px; border: 1px solid black; background: rgba(171,171,171, 0.28);">
+                	<div class="idk" id="cart" style="text-align: left; margin: 0; border: none; border-bottom: 1px solid black; background: rgba(171,171,171, 0.5);; padding: 0">
+                    	<p>Nothing Added Yet</p>
+                	</div>
+                	<h4 id="total">Total: Php 0</h4>
+            	</div>
+        	</div>
+        	<div class="col-sm-8 product"><br>
+            	<h3>Thing:</h3>
+            	<div class="product2">
+                	<form action="https://csq4projectthing.000webhostapp.com" method="post"  style="text-align: left" onsubmit="check()">
+                    	<label for="name">Name:</label>
+                    		<input class="form-control" id="name" type="text" placeholder="Juan Dela Cruz" name="cust_name"><br>
+                    	<label for="email">Email:</label>
+                    		<input class="form-control" id="email" type="text" placeholder="Juan.delacruz@gmail.com" name="cust_email"><br>
+                    	<label for="address">Address:</label>
+                    		<input class="form-control" id="address" type="text" placeholder="1721 Cavite St, Santa Cruz, Manila, 1014 Metro Manila" name="cust_addr">
+                    	<input class="form-control" id="order" type="text" placeholder="Address" name="cust_order" style="display: none">
+                    	<br>
+                    	<input type="submit" value="Submit" class="btn btn-outline-success">
+                	</form>
+            	</div>
+        	</div>
+    	</div>
+    </div>
+	</body>
+</html>
