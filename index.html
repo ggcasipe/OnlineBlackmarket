@@ -211,10 +211,6 @@
         	}
 			function cust_info(){
             if(document.getElementById('cust_name').value==""||(document.getElementById('cust_addr').value==""||document.getElementById('cust_email').value=="")){
-                    alert("Incomplete Information!");
-                return false;
-                }
-            else{
                 document.getElementById('submit').type="submit";
                 document.getElementById('form').action="http://savantandsparktest.ml/checkout.php";
                 document.getElementById('form').method="POST";
